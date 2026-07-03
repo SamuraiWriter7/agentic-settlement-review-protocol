@@ -1,5 +1,44 @@
 # Changelog
 
+## v0.2.0-candidate — Human Settlement Gate
+
+Second candidate release.
+
+### Added
+
+- `human-settlement-gate.schema.json`
+- `human-settlement-gate.example.yaml`
+- Validation support for human settlement gate examples
+- Human review gate structure for settlement candidates
+- Gate decision records for approval, hold, rejection, escalation, and evidence requests
+- Decision basis records for evidence completeness, attribution, payment signals, provider signals, and risk acceptability
+
+### New concepts
+
+- `human_settlement_gate`
+- `gate_scope`
+- `human_reviewers`
+- `gate_decision`
+- `decision_basis`
+- `conditions`
+- `escalation`
+- `gate_status`
+
+### Purpose
+
+v0.2 introduces a human gate between settlement review and settlement readiness.
+
+v0.1 created the Settlement Review Record for reviewing AI agent value-path evidence.  
+v0.2 adds a structured human approval layer that can hold, reject, escalate, or conditionally advance settlement candidates.
+
+### Important note
+
+Human Settlement Gate records are review records.
+
+They do not execute payments, create legal royalty claims, or determine final payout rights by themselves.
+
+Any settlement candidate should remain provisional until accepted by a valid settlement engine, marketplace rule framework, legal process, or authorized payout system.
+
 ## v0.1.0-candidate — Settlement Review Record
 
 Initial candidate release.
@@ -33,3 +72,5 @@ It does not create legal royalty claims.
 It does not approve final payouts.
 
 It only records whether a value-path evidence bundle appears ready for further review, human gate evaluation, legal review, or settlement engine consideration.
+
+
