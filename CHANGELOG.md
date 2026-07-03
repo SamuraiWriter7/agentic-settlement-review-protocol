@@ -1,5 +1,45 @@
 # Changelog
 
+## v0.3.0-candidate — Marketplace Rule Review
+
+Third candidate release.
+
+### Added
+
+- `marketplace-rule-review.schema.json`
+- `marketplace-rule-review.example.yaml`
+- Validation support for marketplace rule review examples
+- Marketplace rule compatibility records for settlement candidates
+- Rule check records for beneficiary eligibility, evidence policy, payment signals, attribution, payout thresholds, dispute windows, and risk policy
+- Conditional approval and escalation records for marketplace-governed settlement flows
+
+### New concepts
+
+- `marketplace_rule_review`
+- `marketplace_context`
+- `rule_scope`
+- `rule_checks`
+- `rule_decision`
+- `conditions`
+- `escalation`
+- `rule_review_status`
+
+### Purpose
+
+v0.3 introduces marketplace rule review between human settlement review and settlement readiness.
+
+v0.1 created the Settlement Review Record for reviewing AI agent value-path evidence.  
+v0.2 added the Human Settlement Gate for human approval, hold, rejection, or escalation.  
+v0.3 adds marketplace and platform rule compatibility checks before any settlement candidate moves toward payout or settlement engine routing.
+
+### Important note
+
+Marketplace Rule Review records are policy compatibility records.
+
+They do not execute payments, create legal royalty claims, or determine final payout rights by themselves.
+
+Any settlement candidate should remain provisional until accepted by a valid settlement engine, marketplace governance system, legal framework, or authorized payout process.
+
 ## v0.2.0-candidate — Human Settlement Gate
 
 Second candidate release.
