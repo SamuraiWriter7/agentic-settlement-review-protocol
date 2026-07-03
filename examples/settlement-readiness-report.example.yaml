@@ -1,0 +1,61 @@
+settlement_readiness_report:
+  schema_version: "0.5.0-candidate"
+  report_id: srrp_20260704_001
+  created_at: "2026-07-04T06:50:00Z"
+
+  report_scope:
+    report_type: settlement_readiness_summary
+    purpose: "Summarize whether an AI agent settlement candidate is ready for settlement engine consideration."
+    settlement_decision_requested: false
+
+  source_reviews:
+    settlement_review_ref: "srr_20260704_001"
+    human_settlement_gate_ref: "hsg_20260704_001"
+    marketplace_rule_review_ref: "mrr_20260704_001"
+    dispute_appeal_record_refs:
+      - "dar_20260704_001"
+    agentic_royalty_path_ref: "arp_20260703_001"
+    path_royalty_weighting_ref: "prw_20260703_001"
+
+  readiness_summary:
+    evidence_ready: true
+    human_gate_ready: false
+    marketplace_rule_ready: true
+    dispute_clear: false
+    settlement_ready: false
+    summary_notes: "Evidence and marketplace checks are mostly complete, but human gate review and dispute resolution remain unfinished."
+
+  blocking_status:
+    blocked: true
+    blockers:
+      - blocker_type: human_review_pending
+        blocker_ref: "hsg_20260704_001"
+        severity: medium
+        resolution_required: "Complete human settlement gate review."
+      - blocker_type: open_dispute
+        blocker_ref: "dar_20260704_001"
+        severity: high
+        resolution_required: "Resolve the open royalty weighting dispute before settlement readiness."
+
+  settlement_route:
+    recommended_route: return_to_dispute_review
+    route_reason: "Settlement readiness cannot be granted while an open dispute remains unresolved."
+    next_required_action: resolve_dispute
+    settlement_engine_ref: null
+
+  risk_summary:
+    risk_level: medium
+    risk_acceptable: false
+    risk_notes: "Risk remains above acceptable level because dispute resolution is still open."
+
+  recommendation:
+    readiness_decision: blocked
+    decision_reason: "The settlement candidate is blocked by pending human review and an unresolved dispute."
+    payout_decision_created: false
+    legal_claim_created: false
+
+  audit:
+    report_status: blocked
+    finalized: false
+    requires_follow_up: true
+    notes: "This report summarizes settlement readiness only. It does not approve payout or create legal claims."
