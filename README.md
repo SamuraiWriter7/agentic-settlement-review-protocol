@@ -118,3 +118,52 @@ Important note
 This protocol does not create legal royalty claims, approve payouts, or execute settlement.
 
 It provides audit-ready review records for determining whether AI agent value-path evidence is ready for further review or settlement consideration.
+
+## v0.2 — Human Settlement Gate
+
+v0.2 introduces the Human Settlement Gate.
+
+This layer defines how human reviewers can approve, hold, reject, or escalate settlement candidates before any payout decision or settlement engine execution.
+
+The Human Settlement Gate sits after the Settlement Review Record:
+
+```text
+Value Path Evidence
+  ↓
+Settlement Review Record
+  ↓
+Human Settlement Gate
+  ↓
+Approved / Hold / Needs More Evidence / Rejected
+  ↓
+Settlement Readiness
+Added in v0.2
+human-settlement-gate.schema.json
+human-settlement-gate.example.yaml
+validation coverage for human settlement gate examples
+Human Settlement Gate concepts
+
+v0.2 introduces:
+
+gate_scope
+human_reviewers
+gate_decision
+decision_basis
+conditions
+escalation
+audit
+Design principle
+
+The Human Settlement Gate does not execute payments.
+
+It does not create legal royalty claims.
+
+It does not approve final settlement by itself unless an external settlement process explicitly accepts the gate output.
+
+Instead, it records whether a human reviewer has approved, held, rejected, or escalated a settlement candidate.
+
+Important note
+
+A human gate decision is still an audit record.
+
+Any payout, legal claim, or final settlement should be handled by a separate settlement engine, legal framework, marketplace rule system, or authorized payout process.
