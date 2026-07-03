@@ -23,6 +23,11 @@ VALIDATION_TARGETS = [
         "schema": ROOT / "schemas" / "marketplace-rule-review.schema.json",
         "example": ROOT / "examples" / "marketplace-rule-review.example.yaml",
     },
+    {
+        "name": "Dispute / Appeal Record",
+        "schema": ROOT / "schemas" / "dispute-appeal-record.schema.json",
+        "example": ROOT / "examples" / "dispute-appeal-record.example.yaml",
+    },
 ]
 
 
