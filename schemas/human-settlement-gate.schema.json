@@ -1,0 +1,270 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/schemas/human-settlement-gate.schema.json",
+  "title": "Human Settlement Gate",
+  "description": "A human review gate for approving, holding, rejecting, or escalating AI agent settlement candidates before payout or settlement engine execution.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["human_settlement_gate"],
+  "properties": {
+    "human_settlement_gate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "gate_id",
+        "review_ref",
+        "gate_scope",
+        "human_reviewers",
+        "gate_decision",
+        "decision_basis",
+        "conditions",
+        "escalation",
+        "audit"
+      ],
+      "properties": {
+        "schema_version": {
+          "type": "string"
+        },
+        "gate_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "review_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "gate_scope": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "gate_type",
+            "purpose",
+            "settlement_action_requested"
+          ],
+          "properties": {
+            "gate_type": {
+              "type": "string",
+              "enum": [
+                "human_review_gate",
+                "human_approval_gate",
+                "human_escalation_gate",
+                "human_rejection_gate",
+                "other"
+              ]
+            },
+            "purpose": {
+              "type": "string"
+            },
+            "settlement_action_requested": {
+              "type": "boolean"
+            }
+          }
+        },
+        "human_reviewers": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "reviewer_id",
+              "reviewer_role",
+              "review_status"
+            ],
+            "properties": {
+              "reviewer_id": {
+                "type": "string"
+              },
+              "reviewer_role": {
+                "type": "string",
+                "enum": [
+                  "origin_owner",
+                  "marketplace_operator",
+                  "legal_reviewer",
+                  "settlement_operator",
+                  "human_auditor",
+                  "beneficiary_representative",
+                  "other"
+                ]
+              },
+              "review_status": {
+                "type": "string",
+                "enum": [
+                  "pending",
+                  "approved",
+                  "rejected",
+                  "needs_more_evidence",
+                  "abstained"
+                ]
+              },
+              "notes": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "gate_decision": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "decision",
+            "decision_reason",
+            "payout_decision_created",
+            "legal_claim_created"
+          ],
+          "properties": {
+            "decision": {
+              "type": "string",
+              "enum": [
+                "approved_for_settlement_engine",
+                "hold_for_more_review",
+                "needs_more_evidence",
+                "requires_legal_review",
+                "rejected",
+                "disputed"
+              ]
+            },
+            "decision_reason": {
+              "type": "string"
+            },
+            "payout_decision_created": {
+              "type": "boolean"
+            },
+            "legal_claim_created": {
+              "type": "boolean"
+            }
+          }
+        },
+        "decision_basis": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "evidence_complete",
+            "attribution_acceptable",
+            "payment_signal_acceptable",
+            "provider_signal_acceptable",
+            "risk_acceptable"
+          ],
+          "properties": {
+            "evidence_complete": {
+              "type": "boolean"
+            },
+            "attribution_acceptable": {
+              "type": "boolean"
+            },
+            "payment_signal_acceptable": {
+              "type": "boolean"
+            },
+            "provider_signal_acceptable": {
+              "type": "boolean"
+            },
+            "risk_acceptable": {
+              "type": "boolean"
+            },
+            "basis_notes": {
+              "type": "string"
+            }
+          }
+        },
+        "conditions": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "conditions_attached",
+            "required_actions"
+          ],
+          "properties": {
+            "conditions_attached": {
+              "type": "boolean"
+            },
+            "required_actions": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "collect_more_evidence",
+                  "confirm_beneficiary_identity",
+                  "confirm_payment_receipt",
+                  "confirm_provider_record",
+                  "legal_review",
+                  "marketplace_rule_review",
+                  "resolve_dispute",
+                  "none",
+                  "other"
+                ]
+              }
+            },
+            "condition_notes": {
+              "type": "string"
+            }
+          }
+        },
+        "escalation": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "escalation_required",
+            "escalation_target"
+          ],
+          "properties": {
+            "escalation_required": {
+              "type": "boolean"
+            },
+            "escalation_target": {
+              "type": ["string", "null"],
+              "enum": [
+                "legal_review",
+                "marketplace_rule_engine",
+                "external_settlement_engine",
+                "dispute_review",
+                "none",
+                null
+              ]
+            },
+            "escalation_reason": {
+              "type": "string"
+            }
+          }
+        },
+        "audit": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "gate_status",
+            "finalized",
+            "requires_follow_up",
+            "notes"
+          ],
+          "properties": {
+            "gate_status": {
+              "type": "string",
+              "enum": [
+                "pending",
+                "under_review",
+                "approved",
+                "held",
+                "rejected",
+                "disputed",
+                "escalated"
+              ]
+            },
+            "finalized": {
+              "type": "boolean"
+            },
+            "requires_follow_up": {
+              "type": "boolean"
+            },
+            "notes": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  }
+}
