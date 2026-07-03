@@ -1,0 +1,49 @@
+human_settlement_gate:
+  schema_version: "0.2.0-candidate"
+  gate_id: hsg_20260704_001
+  created_at: "2026-07-04T05:45:00Z"
+
+  review_ref: "srr_20260704_001"
+
+  gate_scope:
+    gate_type: human_review_gate
+    purpose: "Human review of settlement readiness before any payout or settlement engine execution."
+    settlement_action_requested: false
+
+  human_reviewers:
+    - reviewer_id: "reviewer:human-001"
+      reviewer_role: human_auditor
+      review_status: pending
+      notes: "Reviewer must confirm attribution and evidence completeness before settlement escalation."
+
+  gate_decision:
+    decision: hold_for_more_review
+    decision_reason: "The candidate attribution is plausible, but human confirmation is required before settlement engine routing."
+    payout_decision_created: false
+    legal_claim_created: false
+
+  decision_basis:
+    evidence_complete: true
+    attribution_acceptable: false
+    payment_signal_acceptable: true
+    provider_signal_acceptable: true
+    risk_acceptable: true
+    basis_notes: "Payment and provider signals are acceptable, but attribution still requires human confirmation."
+
+  conditions:
+    conditions_attached: true
+    required_actions:
+      - confirm_beneficiary_identity
+      - marketplace_rule_review
+    condition_notes: "Beneficiary identity and marketplace rules should be confirmed before approval."
+
+  escalation:
+    escalation_required: false
+    escalation_target: none
+    escalation_reason: "No escalation required yet. Human review is still pending."
+
+  audit:
+    gate_status: held
+    finalized: false
+    requires_follow_up: true
+    notes: "This gate does not approve payout. It holds the candidate for additional human review."
