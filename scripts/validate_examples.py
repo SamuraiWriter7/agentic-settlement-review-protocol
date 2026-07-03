@@ -28,6 +28,11 @@ VALIDATION_TARGETS = [
         "schema": ROOT / "schemas" / "dispute-appeal-record.schema.json",
         "example": ROOT / "examples" / "dispute-appeal-record.example.yaml",
     },
+    {
+        "name": "Settlement Readiness Report",
+        "schema": ROOT / "schemas" / "settlement-readiness-report.schema.json",
+        "example": ROOT / "examples" / "settlement-readiness-report.example.yaml",
+    },
 ]
 
 
