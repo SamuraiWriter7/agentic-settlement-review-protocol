@@ -1,18 +1,21 @@
 # Agentic Settlement Review Protocol
 
-A protocol for reviewing AI agent value-path evidence, commerce audits, royalty candidates, and settlement readiness before payout decisions.
+A protocol for reviewing AI agent value-path evidence, commerce audits, royalty candidates, marketplace rule checks, disputes, and settlement readiness before payout decisions.
 
 ## Purpose
 
-Agentic Settlement Review Protocol defines a review layer between agentic value-path evidence and settlement decisions.
+Agentic Settlement Review Protocol defines a review layer between AI agent value-path evidence and settlement decisions.
 
 It is designed to receive records from systems such as:
 
-- Agentic Royalty Path records
-- Monetization Event records
-- Path Royalty Weighting records
-- Provider Bridge records
-- Agent Commerce Audit Bridge records
+* Agentic Royalty Path records
+* Monetization Event records
+* Path Royalty Weighting records
+* Provider Bridge records
+* Agent Commerce Audit Bridge records
+* Human Settlement Gate records
+* Marketplace Rule Review records
+* Dispute / Appeal records
 
 The protocol does not execute payments.
 
@@ -20,11 +23,11 @@ It does not create legal royalty claims.
 
 It does not approve final payouts.
 
-Instead, it reviews whether the available evidence is ready to move toward human review, legal review, marketplace rule evaluation, or an external settlement engine.
+Instead, it reviews whether the available evidence is ready to move toward human review, marketplace rule evaluation, legal review, dispute resolution, or an external settlement engine.
 
 ## Core idea
 
-The previous layer records how value was generated:
+The previous layer records how AI agent value was generated:
 
 ```text
 Agentic Path
@@ -36,9 +39,90 @@ Path Royalty Weighting
 Provider Bridge
   ↓
 Commerce Audit
+```
 
 This protocol reviews whether those records are ready for settlement consideration:
 
+```text
+Value Path Evidence
+  ↓
+Settlement Review Record
+  ↓
+Human Settlement Gate
+  ↓
+Marketplace Rule Review
+  ↓
+Dispute / Appeal Record
+  ↓
+Settlement Readiness Report
+```
+
+The goal is to keep AI agent settlement flows auditable, reviewable, and non-final until the proper review gates have been completed.
+
+## Design principles
+
+### 1. Review before settlement
+
+Evidence should be reviewed before any payout decision is made.
+
+A value path may be plausible without being ready for settlement.
+
+### 2. Candidate, not claim
+
+A royalty candidate is not a legal claim.
+
+A suggested share is not a payout decision.
+
+A readiness report is not a final settlement.
+
+This protocol preserves those distinctions.
+
+### 3. Human gate by default
+
+When attribution, payment evidence, provider evidence, dispute status, or legal meaning is uncertain, human review should remain available.
+
+### 4. Marketplace-aware
+
+Settlement candidates may be valid as evidence but still fail marketplace or platform rules.
+
+This protocol separates evidence review from marketplace rule compatibility.
+
+### 5. Dispute-safe
+
+Settlement should remain blockable when a dispute, appeal, objection, or contested evidence exists.
+
+### 6. Settlement readiness, not payment execution
+
+This protocol evaluates readiness.
+
+It does not execute payments or settlements.
+
+## Version overview
+
+```text
+v0.1 — Settlement Review Record
+v0.2 — Human Settlement Gate
+v0.3 — Marketplace Rule Review
+v0.4 — Dispute / Appeal Record
+v0.5 — Settlement Readiness Report
+```
+
+## v0.1 — Settlement Review Record
+
+v0.1 introduces the minimum structure for reviewing settlement readiness.
+
+It defines:
+
+* `review_scope`
+* `source_records`
+* `evidence_status`
+* `review_findings`
+* `settlement_recommendation`
+* `audit`
+
+Core flow:
+
+```text
 Value Path Evidence
   ↓
 Settlement Review Record
@@ -46,86 +130,17 @@ Settlement Review Record
 Human / Legal / Marketplace Review
   ↓
 Settlement Readiness
-v0.1 — Settlement Review Record
+```
 
-v0.1 introduces the minimum structure for reviewing settlement readiness.
-
-It defines:
-
-review_scope
-source_records
-evidence_status
-review_findings
-settlement_recommendation
-audit
-Design principles
-1. Review before settlement
-
-Evidence should be reviewed before any payout decision is made.
-
-A value path may be plausible without being ready for settlement.
-
-2. Candidate, not claim
-
-A royalty candidate is not a legal claim.
-
-A suggested share is not a payout decision.
-
-This protocol preserves that distinction.
-
-3. Human gate by default
-
-When attribution, payment evidence, provider evidence, or legal meaning is uncertain, human review should remain available.
-
-4. Settlement readiness, not payment execution
-
-This protocol evaluates readiness.
-
-It does not execute payments or settlements.
-
-Repository structure
-schemas/
-  settlement-review-record.schema.json
-
-examples/
-  settlement-review-record.example.yaml
-
-scripts/
-  validate_examples.py
-
-.github/
-  workflows/
-    validate.yml
-Validation
-python scripts/validate_examples.py
-
-Expected output:
-
-[validate] Settlement Review Record
-  schema : schemas/settlement-review-record.schema.json
-  example: examples/settlement-review-record.example.yaml
-[ok] Settlement Review Record example is valid
-Current candidate
-v0.1.0-candidate — Settlement Review Record
-Roadmap
-v0.1 — Settlement Review Record
-v0.2 — Human Settlement Gate
-v0.3 — Marketplace Rule Review
-v0.4 — Dispute / Appeal Record
-v0.5 — Settlement Readiness Report
-Important note
-
-This protocol does not create legal royalty claims, approve payouts, or execute settlement.
-
-It provides audit-ready review records for determining whether AI agent value-path evidence is ready for further review or settlement consideration.
+The Settlement Review Record evaluates whether an evidence bundle appears ready for further review, human gate evaluation, legal review, or settlement engine consideration.
 
 ## v0.2 — Human Settlement Gate
 
 v0.2 introduces the Human Settlement Gate.
 
-This layer defines how human reviewers can approve, hold, reject, or escalate settlement candidates before any payout decision or settlement engine execution.
+This layer defines how human reviewers can approve, hold, reject, escalate, or request more evidence before any payout decision or settlement engine execution.
 
-The Human Settlement Gate sits after the Settlement Review Record:
+Core flow:
 
 ```text
 Value Path Evidence
@@ -137,36 +152,23 @@ Human Settlement Gate
 Approved / Hold / Needs More Evidence / Rejected
   ↓
 Settlement Readiness
-Added in v0.2
-human-settlement-gate.schema.json
-human-settlement-gate.example.yaml
-validation coverage for human settlement gate examples
-Human Settlement Gate concepts
+```
+
+### Human Settlement Gate concepts
 
 v0.2 introduces:
 
-gate_scope
-human_reviewers
-gate_decision
-decision_basis
-conditions
-escalation
-audit
-Design principle
+* `gate_scope`
+* `human_reviewers`
+* `gate_decision`
+* `decision_basis`
+* `conditions`
+* `escalation`
+* `audit`
 
-The Human Settlement Gate does not execute payments.
+The Human Settlement Gate is a review record.
 
-It does not create legal royalty claims.
-
-It does not approve final settlement by itself unless an external settlement process explicitly accepts the gate output.
-
-Instead, it records whether a human reviewer has approved, held, rejected, or escalated a settlement candidate.
-
-Important note
-
-A human gate decision is still an audit record.
-
-Any payout, legal claim, or final settlement should be handled by a separate settlement engine, legal framework, marketplace rule system, or authorized payout process.
+It does not execute payments, create legal royalty claims, or determine final payout rights by itself.
 
 ## v0.3 — Marketplace Rule Review
 
@@ -174,7 +176,7 @@ v0.3 introduces the Marketplace Rule Review.
 
 This layer evaluates settlement candidates against marketplace, platform, community, policy, eligibility, and payout rules before settlement readiness.
 
-The Marketplace Rule Review sits after the Settlement Review Record and Human Settlement Gate:
+Core flow:
 
 ```text
 Value Path Evidence
@@ -188,36 +190,33 @@ Marketplace Rule Review
 Allowed / Conditional / Rejected / Escalated
   ↓
 Settlement Readiness
-Added in v0.3
-marketplace-rule-review.schema.json
-marketplace-rule-review.example.yaml
-validation coverage for marketplace rule review examples
-Marketplace Rule Review concepts
+```
+
+### Marketplace Rule Review concepts
 
 v0.3 introduces:
 
-marketplace_context
-rule_scope
-rule_checks
-rule_decision
-conditions
-escalation
-rule_review_status
-Design principle
+* `marketplace_context`
+* `rule_scope`
+* `rule_checks`
+* `rule_decision`
+* `conditions`
+* `escalation`
+* `rule_review_status`
 
-The Marketplace Rule Review does not execute payouts.
+Marketplace Rule Review can check whether:
 
-It does not create legal royalty claims.
+* the beneficiary is eligible
+* the evidence meets marketplace policy
+* the payment signal is accepted
+* attribution is allowed
+* payout thresholds are met
+* the dispute window is clear
+* risk policy requirements are satisfied
 
-It does not replace human review.
+The Marketplace Rule Review is a policy compatibility record.
 
-Instead, it records whether a settlement candidate is compatible with marketplace rules, platform policies, payout thresholds, beneficiary eligibility requirements, and dispute windows.
-
-Important note
-
-A Marketplace Rule Review is a policy compatibility record.
-
-Any payout, settlement, or legal claim should still be handled by a separate settlement engine, authorized payout process, legal framework, or marketplace governance mechanism.
+It does not execute payouts or create legal royalty claims.
 
 ## v0.4 — Dispute / Appeal Record
 
@@ -225,7 +224,7 @@ v0.4 introduces the Dispute / Appeal Record.
 
 This layer records disputes, appeals, objections, and review requests related to settlement candidates before settlement readiness.
 
-The Dispute / Appeal Record sits after settlement review, human gate review, and marketplace rule review:
+Core flow:
 
 ```text
 Value Path Evidence
@@ -241,34 +240,180 @@ Dispute / Appeal Record
 Resolved / Rejected / Escalated / Reopened
   ↓
 Settlement Readiness
-Added in v0.4
-dispute-appeal-record.schema.json
-dispute-appeal-record.example.yaml
-validation coverage for dispute and appeal examples
-Dispute / Appeal concepts
+```
+
+### Dispute / Appeal concepts
 
 v0.4 introduces:
 
-dispute_scope
-related_records
-claimant
-dispute_basis
-evidence_submission
-review_process
-resolution
-audit
-Design principle
+* `dispute_scope`
+* `related_records`
+* `claimant`
+* `dispute_basis`
+* `evidence_submission`
+* `review_process`
+* `resolution`
+* `audit`
 
-The Dispute / Appeal Record does not resolve disputes by itself.
+The Dispute / Appeal Record captures contested settlement candidates, attribution disagreements, payment evidence objections, marketplace rule appeals, human gate appeals, royalty weighting disputes, commerce audit disputes, and settlement readiness objections.
 
-It does not execute payouts.
+It does not resolve disputes by itself.
+
+It records the dispute so that settlement can remain blocked, reopened, escalated, or reviewed.
+
+## v0.5 — Settlement Readiness Report
+
+v0.5 introduces the Settlement Readiness Report.
+
+This layer summarizes whether an AI agent settlement candidate is ready, conditionally ready, blocked, rejected, escalated, or not ready before any payout decision or settlement engine execution.
+
+Core flow:
+
+```text
+Value Path Evidence
+  ↓
+Settlement Review Record
+  ↓
+Human Settlement Gate
+  ↓
+Marketplace Rule Review
+  ↓
+Dispute / Appeal Record
+  ↓
+Settlement Readiness Report
+  ↓
+Ready / Conditional / Blocked / Rejected / Escalated
+```
+
+### Settlement Readiness Report concepts
+
+v0.5 introduces:
+
+* `report_scope`
+* `source_reviews`
+* `readiness_summary`
+* `blocking_status`
+* `settlement_route`
+* `risk_summary`
+* `recommendation`
+* `audit`
+
+The Settlement Readiness Report summarizes:
+
+* whether evidence is complete
+* whether the human gate is complete
+* whether marketplace rules are satisfied
+* whether disputes are clear
+* whether settlement remains blocked
+* what next route is recommended
+* what risk level remains
+* whether settlement readiness can be granted
+
+The report does not execute payouts, create legal royalty claims, or determine final settlement rights.
+
+It only summarizes readiness and recommends the next route.
+
+## Repository structure
+
+```text
+schemas/
+  settlement-review-record.schema.json
+  human-settlement-gate.schema.json
+  marketplace-rule-review.schema.json
+  dispute-appeal-record.schema.json
+  settlement-readiness-report.schema.json
+
+examples/
+  settlement-review-record.example.yaml
+  human-settlement-gate.example.yaml
+  marketplace-rule-review.example.yaml
+  dispute-appeal-record.example.yaml
+  settlement-readiness-report.example.yaml
+
+scripts/
+  validate_examples.py
+
+.github/
+  workflows/
+    validate.yml
+```
+
+## Validation
+
+Validate all examples against their schemas:
+
+```bash
+python scripts/validate_examples.py
+```
+
+Expected output:
+
+```text
+[validate] Settlement Review Record
+[ok] Settlement Review Record example is valid
+
+[validate] Human Settlement Gate
+[ok] Human Settlement Gate example is valid
+
+[validate] Marketplace Rule Review
+[ok] Marketplace Rule Review example is valid
+
+[validate] Dispute / Appeal Record
+[ok] Dispute / Appeal Record example is valid
+
+[validate] Settlement Readiness Report
+[ok] Settlement Readiness Report example is valid
+```
+
+## Important note
+
+This protocol does not execute payments.
 
 It does not create legal royalty claims.
 
-Instead, it records who raised the dispute, what the dispute concerns, what evidence was submitted, which review route is required, and whether settlement should remain blocked.
+It does not approve final payouts.
 
-Important note
+It does not determine final settlement rights.
 
-A Dispute / Appeal Record is an audit record.
+Instead, it provides audit-ready review records for evaluating whether AI agent value-path evidence is ready for further review, human gate evaluation, marketplace rule evaluation, dispute resolution, legal review, or settlement engine consideration.
 
-Any disputed settlement candidate should remain provisional until the dispute is resolved by a human reviewer, marketplace operator, legal process, external settlement engine, or other authorized governance mechanism.
+Any commerce action, payment event, authorization event, royalty candidate, suggested share, dispute resolution, or readiness report should be treated as provisional until reviewed and accepted by a valid human process, marketplace governance system, legal framework, settlement engine, or authorized payout process.
+
+## Current candidate
+
+```text
+v0.5.0-candidate — Settlement Readiness Report
+```
+
+## First arc summary
+
+The first candidate arc establishes five review layers:
+
+```text
+Review
+  ↓
+Human Gate
+  ↓
+Marketplace Rule
+  ↓
+Dispute / Appeal
+  ↓
+Readiness Report
+```
+
+Together, these layers define a foundation for AI agent settlement review.
+
+Agentic Settlement Review Protocol is designed as a bridge between AI agent value-path evidence, human review, marketplace governance, dispute handling, and settlement readiness.
+
+## Roadmap
+
+Possible future extensions:
+
+```text
+v0.6 — Legal Review Bridge
+v0.7 — Settlement Engine Handoff
+v0.8 — Multi-Party Settlement Graph
+v0.9 — Payout Execution Receipt
+v1.0 — Agentic Settlement Review Standard
+```
+
