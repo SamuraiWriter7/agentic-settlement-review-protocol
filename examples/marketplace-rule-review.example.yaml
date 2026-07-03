@@ -1,0 +1,60 @@
+marketplace_rule_review:
+  schema_version: "0.3.0-candidate"
+  rule_review_id: mrr_20260704_001
+  created_at: "2026-07-04T06:10:00Z"
+
+  review_refs:
+    settlement_review_ref: "srr_20260704_001"
+    human_settlement_gate_ref: "hsg_20260704_001"
+    agentic_royalty_path_ref: "arp_20260703_001"
+    path_royalty_weighting_ref: "prw_20260703_001"
+    agent_commerce_audit_bridge_ref: "acab_20260703_001"
+
+  marketplace_context:
+    marketplace_id: "marketplace:origin-structure-market-001"
+    marketplace_type: origin_structure_market
+    operator_ref: "operator:marketplace-operator-001"
+    jurisdiction_ref: "jurisdiction:policy-sandbox"
+    marketplace_policy_ref: "policy:origin-structure-market-v1"
+
+  rule_scope:
+    review_type: royalty_candidate_rule_review
+    ruleset_ref: "ruleset:royalty-candidate-eligibility-v1"
+    ruleset_version: "1.0.0"
+    settlement_action_requested: false
+
+  rule_checks:
+    beneficiary_eligible: true
+    evidence_meets_policy: true
+    payment_signal_accepted: true
+    attribution_allowed: true
+    payout_threshold_met: false
+    dispute_window_clear: true
+    risk_policy_clear: true
+    failed_rules:
+      - "payout_threshold_not_met"
+    warnings:
+      - "Candidate may be accumulated until payout threshold is reached."
+
+  rule_decision:
+    decision: conditionally_allowed
+    decision_reason: "Marketplace rules allow the royalty candidate, but payout threshold has not yet been met."
+    payout_decision_created: false
+    legal_claim_created: false
+
+  conditions:
+    conditions_attached: true
+    required_actions:
+      - verify_payment_threshold
+    condition_notes: "Candidate can proceed to settlement readiness only after payout threshold is satisfied."
+
+  escalation:
+    escalation_required: false
+    escalation_target: none
+    escalation_reason: "No escalation required. Candidate is conditionally allowed under marketplace rules."
+
+  audit:
+    rule_review_status: conditionally_passed
+    finalized: false
+    requires_follow_up: true
+    notes: "This rule review does not approve payout. It records marketplace-rule compatibility only."
