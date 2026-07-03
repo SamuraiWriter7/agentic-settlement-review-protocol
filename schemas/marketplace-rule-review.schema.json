@@ -1,0 +1,310 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/schemas/marketplace-rule-review.schema.json",
+  "title": "Marketplace Rule Review",
+  "description": "A marketplace rule review record for evaluating AI agent settlement candidates against platform, marketplace, community, policy, and payout rules before settlement readiness.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["marketplace_rule_review"],
+  "properties": {
+    "marketplace_rule_review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "rule_review_id",
+        "review_refs",
+        "marketplace_context",
+        "rule_scope",
+        "rule_checks",
+        "rule_decision",
+        "conditions",
+        "escalation",
+        "audit"
+      ],
+      "properties": {
+        "schema_version": {
+          "type": "string"
+        },
+        "rule_review_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "review_refs": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "settlement_review_ref",
+            "human_settlement_gate_ref"
+          ],
+          "properties": {
+            "settlement_review_ref": {
+              "type": "string"
+            },
+            "human_settlement_gate_ref": {
+              "type": ["string", "null"]
+            },
+            "agentic_royalty_path_ref": {
+              "type": ["string", "null"]
+            },
+            "path_royalty_weighting_ref": {
+              "type": ["string", "null"]
+            },
+            "agent_commerce_audit_bridge_ref": {
+              "type": ["string", "null"]
+            }
+          }
+        },
+        "marketplace_context": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "marketplace_id",
+            "marketplace_type",
+            "operator_ref",
+            "jurisdiction_ref"
+          ],
+          "properties": {
+            "marketplace_id": {
+              "type": "string"
+            },
+            "marketplace_type": {
+              "type": "string",
+              "enum": [
+                "origin_structure_market",
+                "content_marketplace",
+                "api_marketplace",
+                "mcp_tool_marketplace",
+                "agent_commerce_marketplace",
+                "royalty_registry",
+                "internal_platform",
+                "other"
+              ]
+            },
+            "operator_ref": {
+              "type": "string"
+            },
+            "jurisdiction_ref": {
+              "type": "string"
+            },
+            "marketplace_policy_ref": {
+              "type": ["string", "null"]
+            }
+          }
+        },
+        "rule_scope": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "review_type",
+            "ruleset_ref",
+            "ruleset_version",
+            "settlement_action_requested"
+          ],
+          "properties": {
+            "review_type": {
+              "type": "string",
+              "enum": [
+                "royalty_candidate_rule_review",
+                "payout_eligibility_review",
+                "beneficiary_rule_review",
+                "commerce_policy_review",
+                "dispute_precheck",
+                "other"
+              ]
+            },
+            "ruleset_ref": {
+              "type": "string"
+            },
+            "ruleset_version": {
+              "type": "string"
+            },
+            "settlement_action_requested": {
+              "type": "boolean"
+            }
+          }
+        },
+        "rule_checks": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "beneficiary_eligible",
+            "evidence_meets_policy",
+            "payment_signal_accepted",
+            "attribution_allowed",
+            "payout_threshold_met",
+            "dispute_window_clear",
+            "risk_policy_clear"
+          ],
+          "properties": {
+            "beneficiary_eligible": {
+              "type": "boolean"
+            },
+            "evidence_meets_policy": {
+              "type": "boolean"
+            },
+            "payment_signal_accepted": {
+              "type": "boolean"
+            },
+            "attribution_allowed": {
+              "type": "boolean"
+            },
+            "payout_threshold_met": {
+              "type": "boolean"
+            },
+            "dispute_window_clear": {
+              "type": "boolean"
+            },
+            "risk_policy_clear": {
+              "type": "boolean"
+            },
+            "failed_rules": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "warnings": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "rule_decision": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "decision",
+            "decision_reason",
+            "payout_decision_created",
+            "legal_claim_created"
+          ],
+          "properties": {
+            "decision": {
+              "type": "string",
+              "enum": [
+                "allowed_for_settlement_review",
+                "conditionally_allowed",
+                "hold_for_more_evidence",
+                "requires_human_review",
+                "requires_legal_review",
+                "rejected_by_marketplace_rule",
+                "disputed"
+              ]
+            },
+            "decision_reason": {
+              "type": "string"
+            },
+            "payout_decision_created": {
+              "type": "boolean"
+            },
+            "legal_claim_created": {
+              "type": "boolean"
+            }
+          }
+        },
+        "conditions": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "conditions_attached",
+            "required_actions"
+          ],
+          "properties": {
+            "conditions_attached": {
+              "type": "boolean"
+            },
+            "required_actions": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "confirm_beneficiary_identity",
+                  "collect_more_evidence",
+                  "wait_for_dispute_window",
+                  "manual_marketplace_operator_review",
+                  "legal_review",
+                  "adjust_suggested_share",
+                  "verify_payment_threshold",
+                  "none",
+                  "other"
+                ]
+              }
+            },
+            "condition_notes": {
+              "type": "string"
+            }
+          }
+        },
+        "escalation": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "escalation_required",
+            "escalation_target"
+          ],
+          "properties": {
+            "escalation_required": {
+              "type": "boolean"
+            },
+            "escalation_target": {
+              "type": ["string", "null"],
+              "enum": [
+                "human_settlement_gate",
+                "legal_review",
+                "marketplace_operator",
+                "dispute_review",
+                "external_settlement_engine",
+                "none",
+                null
+              ]
+            },
+            "escalation_reason": {
+              "type": "string"
+            }
+          }
+        },
+        "audit": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "rule_review_status",
+            "finalized",
+            "requires_follow_up",
+            "notes"
+          ],
+          "properties": {
+            "rule_review_status": {
+              "type": "string",
+              "enum": [
+                "pending",
+                "under_review",
+                "passed",
+                "conditionally_passed",
+                "held",
+                "rejected",
+                "disputed",
+                "escalated"
+              ]
+            },
+            "finalized": {
+              "type": "boolean"
+            },
+            "requires_follow_up": {
+              "type": "boolean"
+            },
+            "notes": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  }
+}
