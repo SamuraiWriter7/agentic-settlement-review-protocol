@@ -218,3 +218,57 @@ Important note
 A Marketplace Rule Review is a policy compatibility record.
 
 Any payout, settlement, or legal claim should still be handled by a separate settlement engine, authorized payout process, legal framework, or marketplace governance mechanism.
+
+## v0.4 — Dispute / Appeal Record
+
+v0.4 introduces the Dispute / Appeal Record.
+
+This layer records disputes, appeals, objections, and review requests related to settlement candidates before settlement readiness.
+
+The Dispute / Appeal Record sits after settlement review, human gate review, and marketplace rule review:
+
+```text
+Value Path Evidence
+  ↓
+Settlement Review Record
+  ↓
+Human Settlement Gate
+  ↓
+Marketplace Rule Review
+  ↓
+Dispute / Appeal Record
+  ↓
+Resolved / Rejected / Escalated / Reopened
+  ↓
+Settlement Readiness
+Added in v0.4
+dispute-appeal-record.schema.json
+dispute-appeal-record.example.yaml
+validation coverage for dispute and appeal examples
+Dispute / Appeal concepts
+
+v0.4 introduces:
+
+dispute_scope
+related_records
+claimant
+dispute_basis
+evidence_submission
+review_process
+resolution
+audit
+Design principle
+
+The Dispute / Appeal Record does not resolve disputes by itself.
+
+It does not execute payouts.
+
+It does not create legal royalty claims.
+
+Instead, it records who raised the dispute, what the dispute concerns, what evidence was submitted, which review route is required, and whether settlement should remain blocked.
+
+Important note
+
+A Dispute / Appeal Record is an audit record.
+
+Any disputed settlement candidate should remain provisional until the dispute is resolved by a human reviewer, marketplace operator, legal process, external settlement engine, or other authorized governance mechanism.
