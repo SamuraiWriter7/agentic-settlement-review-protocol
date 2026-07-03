@@ -1,0 +1,361 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/schemas/dispute-appeal-record.schema.json",
+  "title": "Dispute / Appeal Record",
+  "description": "A dispute and appeal record for reviewing contested AI agent settlement candidates, marketplace rule decisions, attribution claims, payment evidence, or royalty candidate mappings.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["dispute_appeal_record"],
+  "properties": {
+    "dispute_appeal_record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "dispute_id",
+        "dispute_scope",
+        "related_records",
+        "claimant",
+        "dispute_basis",
+        "evidence_submission",
+        "review_process",
+        "resolution",
+        "audit"
+      ],
+      "properties": {
+        "schema_version": {
+          "type": "string"
+        },
+        "dispute_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "dispute_scope": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "dispute_type",
+            "purpose",
+            "settlement_blocked"
+          ],
+          "properties": {
+            "dispute_type": {
+              "type": "string",
+              "enum": [
+                "attribution_dispute",
+                "beneficiary_dispute",
+                "payment_evidence_dispute",
+                "marketplace_rule_appeal",
+                "human_gate_appeal",
+                "royalty_weighting_dispute",
+                "commerce_audit_dispute",
+                "settlement_readiness_dispute",
+                "other"
+              ]
+            },
+            "purpose": {
+              "type": "string"
+            },
+            "settlement_blocked": {
+              "type": "boolean"
+            }
+          }
+        },
+        "related_records": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "settlement_review_ref",
+            "human_settlement_gate_ref",
+            "marketplace_rule_review_ref"
+          ],
+          "properties": {
+            "settlement_review_ref": {
+              "type": ["string", "null"]
+            },
+            "human_settlement_gate_ref": {
+              "type": ["string", "null"]
+            },
+            "marketplace_rule_review_ref": {
+              "type": ["string", "null"]
+            },
+            "agentic_royalty_path_ref": {
+              "type": ["string", "null"]
+            },
+            "path_royalty_weighting_ref": {
+              "type": ["string", "null"]
+            },
+            "agent_commerce_audit_bridge_ref": {
+              "type": ["string", "null"]
+            }
+          }
+        },
+        "claimant": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "claimant_ref",
+            "claimant_role",
+            "claimant_status"
+          ],
+          "properties": {
+            "claimant_ref": {
+              "type": "string"
+            },
+            "claimant_role": {
+              "type": "string",
+              "enum": [
+                "origin_author",
+                "beneficiary_candidate",
+                "resource_owner",
+                "marketplace_operator",
+                "agent_operator",
+                "human_reviewer",
+                "legal_reviewer",
+                "external_provider",
+                "other"
+              ]
+            },
+            "claimant_status": {
+              "type": "string",
+              "enum": [
+                "verified",
+                "unverified",
+                "pending_verification",
+                "rejected"
+              ]
+            }
+          }
+        },
+        "dispute_basis": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "basis_type",
+            "summary",
+            "requested_action"
+          ],
+          "properties": {
+            "basis_type": {
+              "type": "string",
+              "enum": [
+                "incorrect_attribution",
+                "missing_beneficiary",
+                "incorrect_weighting",
+                "invalid_payment_signal",
+                "invalid_provider_signal",
+                "marketplace_rule_misapplied",
+                "human_review_error",
+                "fraud_or_abuse_suspected",
+                "insufficient_evidence",
+                "other"
+              ]
+            },
+            "summary": {
+              "type": "string"
+            },
+            "requested_action": {
+              "type": "string",
+              "enum": [
+                "recalculate_weighting",
+                "add_beneficiary",
+                "remove_beneficiary",
+                "hold_settlement",
+                "reject_candidate",
+                "reopen_review",
+                "escalate_to_legal_review",
+                "escalate_to_marketplace_operator",
+                "other"
+              ]
+            }
+          }
+        },
+        "evidence_submission": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "evidence_refs",
+            "new_evidence_submitted",
+            "evidence_status"
+          ],
+          "properties": {
+            "evidence_refs": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "new_evidence_submitted": {
+              "type": "boolean"
+            },
+            "evidence_status": {
+              "type": "string",
+              "enum": [
+                "pending_review",
+                "accepted",
+                "rejected",
+                "needs_more_evidence"
+              ]
+            },
+            "evidence_notes": {
+              "type": "string"
+            }
+          }
+        },
+        "review_process": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "review_required",
+            "review_route",
+            "reviewers"
+          ],
+          "properties": {
+            "review_required": {
+              "type": "boolean"
+            },
+            "review_route": {
+              "type": "string",
+              "enum": [
+                "human_review",
+                "marketplace_operator_review",
+                "legal_review",
+                "external_settlement_engine_review",
+                "multi_party_review",
+                "other"
+              ]
+            },
+            "reviewers": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "reviewer_ref",
+                  "reviewer_role",
+                  "review_status"
+                ],
+                "properties": {
+                  "reviewer_ref": {
+                    "type": "string"
+                  },
+                  "reviewer_role": {
+                    "type": "string",
+                    "enum": [
+                      "human_auditor",
+                      "marketplace_operator",
+                      "legal_reviewer",
+                      "settlement_operator",
+                      "beneficiary_representative",
+                      "external_provider",
+                      "other"
+                    ]
+                  },
+                  "review_status": {
+                    "type": "string",
+                    "enum": [
+                      "pending",
+                      "approved",
+                      "rejected",
+                      "needs_more_evidence",
+                      "abstained"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "resolution": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "resolution_status",
+            "resolution_decision",
+            "settlement_unblocked",
+            "payout_decision_created",
+            "legal_claim_created"
+          ],
+          "properties": {
+            "resolution_status": {
+              "type": "string",
+              "enum": [
+                "open",
+                "under_review",
+                "resolved",
+                "rejected",
+                "escalated",
+                "reopened",
+                "withdrawn"
+              ]
+            },
+            "resolution_decision": {
+              "type": "string",
+              "enum": [
+                "no_change",
+                "weighting_adjusted",
+                "beneficiary_added",
+                "beneficiary_removed",
+                "settlement_held",
+                "candidate_rejected",
+                "review_reopened",
+                "escalated_to_legal",
+                "escalated_to_marketplace_operator",
+                "pending"
+              ]
+            },
+            "settlement_unblocked": {
+              "type": "boolean"
+            },
+            "payout_decision_created": {
+              "type": "boolean"
+            },
+            "legal_claim_created": {
+              "type": "boolean"
+            },
+            "resolution_notes": {
+              "type": "string"
+            }
+          }
+        },
+        "audit": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "dispute_status",
+            "finalized",
+            "requires_follow_up",
+            "notes"
+          ],
+          "properties": {
+            "dispute_status": {
+              "type": "string",
+              "enum": [
+                "open",
+                "under_review",
+                "resolved",
+                "rejected",
+                "escalated",
+                "reopened",
+                "withdrawn"
+              ]
+            },
+            "finalized": {
+              "type": "boolean"
+            },
+            "requires_follow_up": {
+              "type": "boolean"
+            },
+            "notes": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  }
+}
