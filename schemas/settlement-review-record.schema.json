@@ -1,0 +1,266 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/schemas/settlement-review-record.schema.json",
+  "title": "Settlement Review Record",
+  "description": "A review record for evaluating AI agent value-path evidence, commerce audit records, royalty candidates, and settlement readiness before payout decisions.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["settlement_review_record"],
+  "properties": {
+    "settlement_review_record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "review_id",
+        "review_scope",
+        "source_records",
+        "evidence_status",
+        "review_findings",
+        "settlement_recommendation",
+        "audit"
+      ],
+      "properties": {
+        "schema_version": {
+          "type": "string"
+        },
+        "review_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "review_scope": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "review_type",
+            "purpose",
+            "settlement_decision_requested"
+          ],
+          "properties": {
+            "review_type": {
+              "type": "string",
+              "enum": [
+                "royalty_candidate_review",
+                "commerce_audit_review",
+                "settlement_readiness_review",
+                "human_gate_review",
+                "marketplace_rule_review",
+                "other"
+              ]
+            },
+            "purpose": {
+              "type": "string"
+            },
+            "settlement_decision_requested": {
+              "type": "boolean"
+            }
+          }
+        },
+        "source_records": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "agentic_royalty_path_ref",
+            "monetization_event_refs",
+            "path_royalty_weighting_ref",
+            "provider_bridge_ref",
+            "agent_commerce_audit_bridge_ref"
+          ],
+          "properties": {
+            "agentic_royalty_path_ref": {
+              "type": "string"
+            },
+            "monetization_event_refs": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "path_royalty_weighting_ref": {
+              "type": ["string", "null"]
+            },
+            "provider_bridge_ref": {
+              "type": ["string", "null"]
+            },
+            "agent_commerce_audit_bridge_ref": {
+              "type": ["string", "null"]
+            }
+          }
+        },
+        "evidence_status": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "path_evidence_complete",
+            "payment_evidence_complete",
+            "provider_evidence_complete",
+            "commerce_audit_complete",
+            "missing_evidence"
+          ],
+          "properties": {
+            "path_evidence_complete": {
+              "type": "boolean"
+            },
+            "payment_evidence_complete": {
+              "type": "boolean"
+            },
+            "provider_evidence_complete": {
+              "type": "boolean"
+            },
+            "commerce_audit_complete": {
+              "type": "boolean"
+            },
+            "missing_evidence": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "review_findings": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "royalty_candidate_status",
+            "attribution_confidence",
+            "payment_signal_confirmed",
+            "provider_signal_confirmed",
+            "human_review_required",
+            "legal_review_required"
+          ],
+          "properties": {
+            "royalty_candidate_status": {
+              "type": "string",
+              "enum": [
+                "candidate",
+                "plausible",
+                "confirmed_for_review",
+                "rejected",
+                "needs_more_evidence",
+                "not_applicable"
+              ]
+            },
+            "attribution_confidence": {
+              "type": "string",
+              "enum": [
+                "low",
+                "medium",
+                "high",
+                "unknown"
+              ]
+            },
+            "payment_signal_confirmed": {
+              "type": "boolean"
+            },
+            "provider_signal_confirmed": {
+              "type": "boolean"
+            },
+            "human_review_required": {
+              "type": "boolean"
+            },
+            "legal_review_required": {
+              "type": "boolean"
+            }
+          }
+        },
+        "settlement_recommendation": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "recommendation",
+            "reason",
+            "payout_decision_created",
+            "legal_claim_created"
+          ],
+          "properties": {
+            "recommendation": {
+              "type": "string",
+              "enum": [
+                "ready_for_review",
+                "hold_for_human_review",
+                "needs_more_evidence",
+                "requires_legal_review",
+                "rejected",
+                "ready_for_settlement_engine"
+              ]
+            },
+            "reason": {
+              "type": "string"
+            },
+            "payout_decision_created": {
+              "type": "boolean"
+            },
+            "legal_claim_created": {
+              "type": "boolean"
+            }
+          }
+        },
+        "audit": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "review_status",
+            "reviewed_by",
+            "notes"
+          ],
+          "properties": {
+            "review_status": {
+              "type": "string",
+              "enum": [
+                "pending_review",
+                "under_review",
+                "reviewed",
+                "rejected",
+                "disputed"
+              ]
+            },
+            "reviewed_by": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "reviewer_type",
+                  "reviewer_ref",
+                  "status"
+                ],
+                "properties": {
+                  "reviewer_type": {
+                    "type": "string",
+                    "enum": [
+                      "human",
+                      "marketplace_rule_engine",
+                      "legal_reviewer",
+                      "external_settlement_engine",
+                      "other"
+                    ]
+                  },
+                  "reviewer_ref": {
+                    "type": "string"
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "pending",
+                      "approved",
+                      "rejected",
+                      "needs_more_evidence"
+                    ]
+                  }
+                }
+              }
+            },
+            "notes": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  }
+}
