@@ -1,0 +1,62 @@
+dispute_appeal_record:
+  schema_version: "0.4.0-candidate"
+  dispute_id: dar_20260704_001
+  created_at: "2026-07-04T06:30:00Z"
+
+  dispute_scope:
+    dispute_type: royalty_weighting_dispute
+    purpose: "Review a disputed suggested share before settlement readiness."
+    settlement_blocked: true
+
+  related_records:
+    settlement_review_ref: "srr_20260704_001"
+    human_settlement_gate_ref: "hsg_20260704_001"
+    marketplace_rule_review_ref: "mrr_20260704_001"
+    agentic_royalty_path_ref: "arp_20260703_001"
+    path_royalty_weighting_ref: "prw_20260703_001"
+    agent_commerce_audit_bridge_ref: "acab_20260703_001"
+
+  claimant:
+    claimant_ref: "origin:test-flow-login-v1"
+    claimant_role: origin_author
+    claimant_status: verified
+
+  dispute_basis:
+    basis_type: incorrect_weighting
+    summary: "The claimant believes the original test flow contribution was underweighted in the royalty candidate mapping."
+    requested_action: recalculate_weighting
+
+  evidence_submission:
+    evidence_refs:
+      - "arp_20260703_001"
+      - "prw_20260703_001"
+      - "bar_001"
+      - "bar_003"
+    new_evidence_submitted: true
+    evidence_status: pending_review
+    evidence_notes: "Additional evidence references show repeated use of the original test flow."
+
+  review_process:
+    review_required: true
+    review_route: multi_party_review
+    reviewers:
+      - reviewer_ref: "reviewer:human-001"
+        reviewer_role: human_auditor
+        review_status: pending
+      - reviewer_ref: "operator:marketplace-operator-001"
+        reviewer_role: marketplace_operator
+        review_status: pending
+
+  resolution:
+    resolution_status: open
+    resolution_decision: pending
+    settlement_unblocked: false
+    payout_decision_created: false
+    legal_claim_created: false
+    resolution_notes: "Settlement remains blocked until the dispute review is completed."
+
+  audit:
+    dispute_status: open
+    finalized: false
+    requires_follow_up: true
+    notes: "This record captures a dispute only. It does not approve payout or create legal claims."
