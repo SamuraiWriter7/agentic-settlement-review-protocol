@@ -1,5 +1,49 @@
 # Changelog
 
+## v0.4.0-candidate — Dispute / Appeal Record
+
+Fourth candidate release.
+
+### Added
+
+- `dispute-appeal-record.schema.json`
+- `dispute-appeal-record.example.yaml`
+- Validation support for dispute and appeal examples
+- Dispute records for contested settlement candidates
+- Appeal records for marketplace rule decisions and human gate outcomes
+- Evidence submission records for new or contested evidence
+- Resolution records for blocked, reopened, escalated, or resolved settlement candidates
+
+### New concepts
+
+- `dispute_appeal_record`
+- `dispute_scope`
+- `related_records`
+- `claimant`
+- `dispute_basis`
+- `evidence_submission`
+- `review_process`
+- `resolution`
+- `dispute_status`
+
+### Purpose
+
+v0.4 introduces dispute and appeal handling before settlement readiness.
+
+v0.1 created the Settlement Review Record for reviewing AI agent value-path evidence.  
+v0.2 added the Human Settlement Gate for human approval, hold, rejection, or escalation.  
+v0.3 added Marketplace Rule Review for marketplace and platform policy compatibility.  
+v0.4 records disputes, appeals, objections, and review requests related to attribution, weighting, payment evidence, provider signals, marketplace rules, or human gate outcomes.
+
+### Important note
+
+Dispute / Appeal Records are audit records.
+
+They do not resolve disputes, execute payments, create legal royalty claims, or determine final payout rights by themselves.
+
+Any disputed settlement candidate should remain provisional until resolved by a valid human review process, marketplace governance system, legal framework, or authorized settlement process.
+v0.4 の思想的位置づけ
+
 ## v0.3.0-candidate — Marketplace Rule Review
 
 Third candidate release.
