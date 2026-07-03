@@ -18,6 +18,11 @@ VALIDATION_TARGETS = [
         "schema": ROOT / "schemas" / "human-settlement-gate.schema.json",
         "example": ROOT / "examples" / "human-settlement-gate.example.yaml",
     },
+    {
+        "name": "Marketplace Rule Review",
+        "schema": ROOT / "schemas" / "marketplace-rule-review.schema.json",
+        "example": ROOT / "examples" / "marketplace-rule-review.example.yaml",
+    },
 ]
 
 
