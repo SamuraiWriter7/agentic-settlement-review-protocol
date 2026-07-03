@@ -12,7 +12,12 @@ VALIDATION_TARGETS = [
         "name": "Settlement Review Record",
         "schema": ROOT / "schemas" / "settlement-review-record.schema.json",
         "example": ROOT / "examples" / "settlement-review-record.example.yaml",
-    }
+    },
+    {
+        "name": "Human Settlement Gate",
+        "schema": ROOT / "schemas" / "human-settlement-gate.schema.json",
+        "example": ROOT / "examples" / "human-settlement-gate.example.yaml",
+    },
 ]
 
 
