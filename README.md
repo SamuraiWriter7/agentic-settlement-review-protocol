@@ -167,3 +167,54 @@ Important note
 A human gate decision is still an audit record.
 
 Any payout, legal claim, or final settlement should be handled by a separate settlement engine, legal framework, marketplace rule system, or authorized payout process.
+
+## v0.3 — Marketplace Rule Review
+
+v0.3 introduces the Marketplace Rule Review.
+
+This layer evaluates settlement candidates against marketplace, platform, community, policy, eligibility, and payout rules before settlement readiness.
+
+The Marketplace Rule Review sits after the Settlement Review Record and Human Settlement Gate:
+
+```text
+Value Path Evidence
+  ↓
+Settlement Review Record
+  ↓
+Human Settlement Gate
+  ↓
+Marketplace Rule Review
+  ↓
+Allowed / Conditional / Rejected / Escalated
+  ↓
+Settlement Readiness
+Added in v0.3
+marketplace-rule-review.schema.json
+marketplace-rule-review.example.yaml
+validation coverage for marketplace rule review examples
+Marketplace Rule Review concepts
+
+v0.3 introduces:
+
+marketplace_context
+rule_scope
+rule_checks
+rule_decision
+conditions
+escalation
+rule_review_status
+Design principle
+
+The Marketplace Rule Review does not execute payouts.
+
+It does not create legal royalty claims.
+
+It does not replace human review.
+
+Instead, it records whether a settlement candidate is compatible with marketplace rules, platform policies, payout thresholds, beneficiary eligibility requirements, and dispute windows.
+
+Important note
+
+A Marketplace Rule Review is a policy compatibility record.
+
+Any payout, settlement, or legal claim should still be handled by a separate settlement engine, authorized payout process, legal framework, or marketplace governance mechanism.
